@@ -1,7 +1,5 @@
-# File: _config.yml
-title: Page Not Found
+title: Your Site
 
-# Make default layout automatic
 defaults:
   - scope:
       path: ""
