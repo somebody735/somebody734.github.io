@@ -1,0 +1,179 @@
+<!-- File: _layouts/default.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.title }}</title>
+    
+    <style>
+        /* Device ID Popout Styles */
+        #device-tracker-popout {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-width: 250px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        #device-tracker-popout.hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-300px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .device-tracker-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .device-tracker-id {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 10px;
+            border-radius: 4px;
+            word-break: break-all;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .device-tracker-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .device-tracker-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .device-tracker-btn-copy {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+        }
+
+        .device-tracker-btn-copy:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .device-tracker-btn-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .device-tracker-btn-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Collapsed state */
+        #device-tracker-popout.collapsed {
+            padding: 10px 15px;
+            width: auto;
+        }
+
+        #device-tracker-popout.collapsed .device-tracker-id,
+        #device-tracker-popout.collapsed .device-tracker-buttons {
+            display: none;
+        }
+
+        .device-tracker-status {
+            font-size: 11px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        .device-tracker-status.blocked {
+            color: #ff6b6b;
+        }
+
+        .device-tracker-status.allowed {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <!-- Device Tracker Popout -->
+    <div id="device-tracker-popout">
+        <div class="device-tracker-header">📱 Device ID</div>
+        <div class="device-tracker-id" id="device-id-text">Loading...</div>
+        <div class="device-tracker-status allowed" id="device-status">✓ Connected</div>
+        <div class="device-tracker-buttons">
+            <button class="device-tracker-btn device-tracker-btn-copy" onclick="copyDeviceID()">Copy</button>
+            <button class="device-tracker-btn device-tracker-btn-toggle" onclick="togglePopout()">−</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    {{ content }}
+
+    <!-- Device Tracker Script -->
+    <script src="https://somebody734.github.io/device-tracker.js" data-auto-init="true"></script>
+
+    <script>
+        // Update popout with device ID
+        function updatePopout() {
+            const deviceID = DeviceTracker.getDeviceID();
+            document.getElementById('device-id-text').textContent = deviceID;
+        }
+
+        // Copy device ID to clipboard
+        function copyDeviceID() {
+            const deviceID = DeviceTracker.getDeviceID();
+            navigator.clipboard.writeText(deviceID).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        // Toggle popout collapsed/expanded
+        function togglePopout() {
+            const popout = document.getElementById('device-tracker-popout');
+            popout.classList.toggle('collapsed');
+            
+            const btn = event.target;
+            btn.textContent = popout.classList.contains('collapsed') ? '+' : '−';
+        }
+
+        // Initialize popout when page loads
+        window.addEventListener('load', () => {
+            setTimeout(updatePopout, 100);
+        });
+
+        // Also update when DeviceTracker initializes
+        if (window.DeviceTracker) {
+            updatePopout();
+        }
+    </script>
+</body>
+</html>
