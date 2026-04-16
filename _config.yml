@@ -1,8 +1,10 @@
----
+# File: _config.yml
 title: Your Site
 theme: jekyll-theme-minimal
+
+# Make default layout automatic
 defaults:
   - scope:
       path: ""
     values:
-      layout: default
+      layout: "default"
