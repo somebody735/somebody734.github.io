@@ -11,9 +11,9 @@
     appId: "1:717051168639:web:d3b3ad93e9179a86d57c4a"
   };
 
-  const FIREBASE_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  const FIRESTORE_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-  const AUTH_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  const FIREBASE_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js";
+  const FIRESTORE_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js";
+  const AUTH_SCRIPT = "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js";
 
   let db, auth, initialized = false;
 
