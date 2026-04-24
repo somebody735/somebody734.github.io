@@ -18,7 +18,6 @@
 - 3 unblockers/proxies
 - Soundboard with sounds & music
 - Clean UI
-- Neon/Cyberpunk styled Homepage
 
 Website blocked? See [`links.md`](https://github.com/nate-games/nate-games.github.io/blob/main/links.md)
 
